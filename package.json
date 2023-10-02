@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "yarn run start:server & PORT=8000 react-app-rewired start start",
+    "dev": "yarn run start:server & PORT=8000 react-app-rewired start",
     "start:server": "./node_modules/.bin/nodemon server/index.js",
-    "build": "react-app-rewired start build",
-    "test": "react-app-rewired start test",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx,json} --no-error-on-unmatched-pattern",
     "lint:fix": "eslint --fix src/**/*.{js,jsx,ts,tsx,json} --no-error-on-unmatched-pattern",
-    "eject": "react-app-rewired start eject"
+    "eject": "react-app-rewired eject"
   },
   "dependencies": {
     "cors": "^2.8.5",
