@@ -28,7 +28,7 @@ export const Container = styled.div<ContainerProps>`
   justify-content: ${({ justifyContent }) => justifyContent};
   align-items: ${({ alignItems }) => alignItems};
   gap: ${({ gap }) => gap};
-  max-width: ${({ maxWidth }) => maxWidth ?? '1400px'};
+  max-width: ${({ maxWidth }) => maxWidth ?? '1600px'};
   width: 100%;
   margin: 0 auto;
 
