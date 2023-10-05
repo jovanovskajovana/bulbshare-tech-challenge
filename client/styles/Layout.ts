@@ -20,6 +20,7 @@ interface ContainerProps {
   mobileColumn?: boolean
   mobileJustifyContent?: string
   mobileAlignItems?: string
+  mobileMaxWidth?: string
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -36,5 +37,6 @@ export const Container = styled.div<ContainerProps>`
     flex-direction: ${({ mobileColumn }) => (mobileColumn ? 'column' : 'row')};
     justify-content: ${({ mobileJustifyContent }) => mobileJustifyContent};
     align-items: ${({ mobileAlignItems }) => mobileAlignItems};
+    max-width: ${({ mobileMaxWidth }) => mobileMaxWidth ?? '100%'};
   }
 `

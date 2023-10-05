@@ -2,7 +2,7 @@ const colors = {
   white: '#fff',
   black: '#0d1116',
   blue: '#126ae8',
-  grey_500: '#3c3c47',
+  grey_500: '#656d76',
   grey_400: '#d8dee4',
   grey_300: '#f7f9fa',
   transparent: 'transparent',
@@ -19,7 +19,6 @@ export interface Theme {
   textSecondary: string
   textReverse: string
   textHighlight: string
-  textDisabled: string
   // border
   borderPrimary: string
   // common
@@ -37,7 +36,6 @@ export const theme: Theme = {
   textSecondary: colors.grey_500,
   textReverse: colors.white,
   textHighlight: colors.blue,
-  textDisabled: colors.grey_400,
   // border
   borderPrimary: colors.grey_400,
   // common

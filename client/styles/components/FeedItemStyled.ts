@@ -35,24 +35,6 @@ export const ItemBrand = styled.div`
   gap: 0.75rem;
 `
 
-export const BrandLogo = styled.div`
-  position: relative;
-  border-radius: 100%;
-  width: 2.5rem;
-  height: 2.5rem;
-  overflow: hidden;
-`
-
-export const LogoImg = styled.img`
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  object-fit: cover;
-  width: auto;
-  height: 100%;
-`
-
 interface FeedItemBodyProps {
   bgImage: string
 }
@@ -72,10 +54,6 @@ export const FeedItemBody = styled.div<FeedItemBodyProps>`
   @media (max-width: ${breakpoints.screenSM}) {
     height: 400px;
   }
-
-  .feed-title {
-    z-index: 1;
-  }
 `
 
 export const BodyOverlay = styled.div`
@@ -89,4 +67,9 @@ export const BodyOverlay = styled.div`
   );
   width: 100%;
   height: 100%;
+`
+
+export const ItemTitle = styled.div`
+  max-width: 65%;
+  z-index: 1;
 `

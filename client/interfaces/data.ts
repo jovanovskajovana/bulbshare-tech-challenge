@@ -3,10 +3,10 @@ export interface Brand {
   logo: string
 }
 
-export interface FeedItem {
+export interface FeedItemData {
   briefref: string
   brand: Brand
-  name?: string
+  name: string
   description: string
   feed_title: string
   banner_text: string

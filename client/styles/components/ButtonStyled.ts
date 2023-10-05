@@ -9,12 +9,18 @@ export const Button = styled.button<ButtonProps>`
   align-items: center;
   justify-content: center;
   text-transform: uppercase;
-  opacity: ${({ isDisabled }) => (isDisabled ? '0.6' : '1')};
+  padding: 0;
+  opacity: ${({ isDisabled }) => (isDisabled ? '0.3' : '1')};
   pointer-events: ${({ isDisabled }) => (isDisabled ? 'none' : 'all')};
   cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
 `
 
 export const ButtonAsLink = styled(Button)`
+  border: 0;
+  background-color: ${({ theme }) => theme.transparent};
+`
+
+export const ButtonRound = styled(Button)`
   border: 0;
   background-color: ${({ theme }) => theme.transparent};
 `

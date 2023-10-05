@@ -70,6 +70,10 @@ const GlobalStyles = createGlobalStyle`
     max-width: 100%;
     height: auto;
   }
+
+  .no-scroll {
+    overflow: hidden !important;
+  }
 `
 
 export default GlobalStyles
