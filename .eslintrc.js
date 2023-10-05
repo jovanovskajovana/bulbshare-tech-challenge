@@ -21,6 +21,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'spaced-comment': 'error',
     'no-duplicate-imports': 'error',
+    '@typescript-eslint/no-unused-vars': 'warn',
     'prettier/prettier': [
       'error',
       {

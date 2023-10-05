@@ -20,6 +20,7 @@ interface ContainerProps {
   mobileColumn?: boolean
   mobileJustifyContent?: string
   mobileAlignItems?: string
+  mobileMaxWidth?: string
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -28,7 +29,7 @@ export const Container = styled.div<ContainerProps>`
   justify-content: ${({ justifyContent }) => justifyContent};
   align-items: ${({ alignItems }) => alignItems};
   gap: ${({ gap }) => gap};
-  max-width: ${({ maxWidth }) => maxWidth ?? '1400px'};
+  max-width: ${({ maxWidth }) => maxWidth ?? '1600px'};
   width: 100%;
   margin: 0 auto;
 
@@ -36,5 +37,6 @@ export const Container = styled.div<ContainerProps>`
     flex-direction: ${({ mobileColumn }) => (mobileColumn ? 'column' : 'row')};
     justify-content: ${({ mobileJustifyContent }) => mobileJustifyContent};
     align-items: ${({ mobileAlignItems }) => mobileAlignItems};
+    max-width: ${({ mobileMaxWidth }) => mobileMaxWidth ?? '100%'};
   }
 `

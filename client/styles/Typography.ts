@@ -87,3 +87,17 @@ export const BodySmall = styled.p`
     letter-spacing: 0;
   }
 `
+
+export const BodyExtraSmall = styled.p`
+  font-size: 0.75rem;
+  line-height: 1.5rem;
+  letter-spacing: -0.0125rem;
+  color: ${({ theme, color }) => (color ? color : theme.textPrimary)};
+  font-weight: ${({ weight }) => weight ?? 400};
+  ${Text}
+
+  @media (max-width: ${breakpoints.screenSM}) {
+    line-height: 1.25rem;
+    letter-spacing: 0;
+  }
+`
