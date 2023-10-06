@@ -8,6 +8,8 @@ import { Container } from '../styles/Layout'
 import { HomeStyled, FeedList } from '../styles/pages/HomeStyled'
 
 import feed from '../feed.json' // remove this
+import FeedItemSkeleton from '../components/FeedItemSkeleton'
+import { getArrayFromLength } from '../utils/helpers'
 
 const Home: FC = () => {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false)
@@ -23,19 +25,25 @@ const Home: FC = () => {
     setIsDetailsModalOpen(false)
   }
 
+  const isLoading = false // remove this
+
   return (
     <HomeStyled>
       <Container column mobileColumn alignItems="center">
         <FeedList>
-          {feed.map((item, index) => (
-            <FeedItem
-              key={index}
-              brand={item.brand}
-              banner_image={item.banner_image}
-              feed_title={item.feed_title}
-              handleLinkClick={() => onDetailsModalOpen(item.briefref)}
-            />
-          ))}
+          {isLoading
+            ? getArrayFromLength(5).map((_, index) => (
+                <FeedItemSkeleton key={index} />
+              ))
+            : feed.map((item, index) => (
+                <FeedItem
+                  key={index}
+                  brand={item.brand}
+                  banner_image={item.banner_image}
+                  feed_title={item.feed_title}
+                  handleLinkClick={() => onDetailsModalOpen(item.briefref)}
+                />
+              ))}
         </FeedList>
       </Container>
       <Modal isOpen={isDetailsModalOpen}>

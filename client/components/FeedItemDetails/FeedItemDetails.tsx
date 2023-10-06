@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useState, useEffect, useCallback } from 'react'
 import { useTheme } from 'styled-components'
 import moment from 'moment'
 
@@ -44,14 +44,44 @@ const FeedItemDetails: FC<FeedItemDetailsProps> = ({
 
   const [isDetailsView, setIsDetailsView] = useState(false)
 
+  const handleClose = () => {
+    setIsDetailsView(false)
+    handleCloseButtonClick()
+  }
+
+  const handleUp = () => {
+    setIsDetailsView(false)
+  }
+
+  const handleDown = () => {
+    setIsDetailsView(true)
+  }
+
+  const detectKeydown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      handleClose()
+    }
+
+    if (e.key === 'ArrowUp') {
+      handleUp()
+    }
+
+    if (e.key === 'ArrowDown') {
+      handleDown()
+    }
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener('keydown', detectKeydown, false)
+
+    return () => {
+      document.removeEventListener('keydown', detectKeydown, false)
+    }
+  }, [])
+
   return (
-    <FeedItemDetailsStyled>
-      <ButtonClose
-        onClick={() => {
-          setIsDetailsView(false)
-          handleCloseButtonClick()
-        }}
-      >
+    <FeedItemDetailsStyled data-testid="feed-item-details">
+      <ButtonClose onClick={handleClose}>
         <CloseDialog />
       </ButtonClose>
       {!feedItemData ? (
@@ -108,16 +138,10 @@ const FeedItemDetails: FC<FeedItemDetailsProps> = ({
               </Details>
             </Scrollable>
             <ArrowsGroup>
-              <ButtonRound
-                isDisabled={!isDetailsView}
-                onClick={() => setIsDetailsView(false)}
-              >
+              <ButtonRound isDisabled={!isDetailsView} onClick={handleUp}>
                 <SwitchDown className="rotate" />
               </ButtonRound>
-              <ButtonRound
-                isDisabled={isDetailsView}
-                onClick={() => setIsDetailsView(true)}
-              >
+              <ButtonRound isDisabled={isDetailsView} onClick={handleDown}>
                 <SwitchDown />
               </ButtonRound>
             </ArrowsGroup>

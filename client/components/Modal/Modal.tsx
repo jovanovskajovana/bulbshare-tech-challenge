@@ -19,7 +19,7 @@ const Modal: FC<ModalProps> = ({ children, isOpen }) => {
   }, [isOpen])
 
   return (
-    <ModalStyled isOpen={isOpen}>
+    <ModalStyled isOpen={isOpen} data-testid="modal">
       <ModalContent>{children}</ModalContent>
     </ModalStyled>
   )

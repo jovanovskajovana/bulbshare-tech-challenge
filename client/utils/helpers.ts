@@ -17,3 +17,12 @@ export const getDateDifference = (date: string): string => {
     return `${days} days ago`
   }
 }
+
+/**
+ * Get an array of a given length.
+ * @param length - given length
+ * @returns unknown[] - array of elements of the given length
+ */
+export const getArrayFromLength = (length: number): unknown[] => [
+  ...Array(length),
+]
