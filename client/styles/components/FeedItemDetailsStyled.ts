@@ -8,11 +8,10 @@ import { ButtonRound } from './ButtonStyled'
 export const FeedItemDetailsStyled = styled.div`
   position: relative;
   display: flex;
-  height: 100%;
+  min-height: 100%;
 
   @media (max-width: ${breakpoints.screenMD}) {
     flex-direction: column;
-    overflow-y: scroll;
   }
 `
 export const Content = styled.div`
@@ -21,8 +20,14 @@ export const Content = styled.div`
   max-height: 100vh;
   overflow: hidden;
 
+  @media (max-width: ${breakpoints.screenLG}) {
+    width: 75%;
+  }
+
   @media (max-width: ${breakpoints.screenMD}) {
     width: 100%;
+    max-height: 100%;
+    overflow: unset;
   }
 `
 
@@ -35,6 +40,12 @@ export const Scrollable = styled.div<ScrollableProps>`
   transform: ${({ scrollDown }) =>
     scrollDown ? 'translateY(-100vh)' : 'translateY(0)'};
   transition: 0.3s ease-out;
+
+  @media (max-width: ${breakpoints.screenMD}) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
 `
 
 export const Media = styled.div`
@@ -43,6 +54,15 @@ export const Media = styled.div`
   background-color: ${({ theme }) => theme.backgroundDark};
   width: 100%;
   height: 100vh;
+
+  @media (max-width: ${breakpoints.screenMD}) {
+    height: 100%;
+    min-height: 80vh;
+  }
+
+  @media (max-width: ${breakpoints.screenSM}) {
+    min-height: 70vh;
+  }
 `
 
 interface MediaImageProps {
@@ -55,6 +75,10 @@ export const MediaImage = styled.div<MediaImageProps>`
   background-size: cover;
   background-position: bottom;
   width: 55%;
+
+  @media (max-width: ${breakpoints.screenLG}) {
+    width: 65%;
+  }
 
   @media (max-width: ${breakpoints.screenMD}) {
     width: 75%;
@@ -73,11 +97,13 @@ export const Details = styled.div`
   overflow-y: auto;
 
   @media (max-width: ${breakpoints.screenMD}) {
+    max-height: 100%;
     padding: 3rem 1.5rem;
+    overflow-y: unset;
   }
 
   @media (max-width: ${breakpoints.screenSM}) {
-    padding: 3rem 1rem;
+    padding: 2.5rem 1rem;
   }
 `
 
@@ -95,8 +121,15 @@ export const Comments = styled.div`
   max-height: 100vh;
   overflow-y: auto;
 
+  @media (max-width: ${breakpoints.screenLG}) {
+    max-width: 35%;
+  }
+
   @media (max-width: ${breakpoints.screenMD}) {
+    border-left: 0;
     max-width: 100%;
+    max-height: 100%;
+    overflow-y: unset;
   }
 `
 
@@ -115,6 +148,10 @@ export const CommentsBody = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
+
+  @media (max-width: ${breakpoints.screenMD}) {
+    padding: 0.75rem 1.5rem 3rem;
+  }
 `
 
 export const ButtonClose = styled(ButtonRound)`
@@ -139,8 +176,8 @@ export const ArrowsGroup = styled.div`
   gap: 0.5rem;
   z-index: 1;
 
-  @media (max-width: ${breakpoints.screenSM}) {
-    right: 1rem;
+  @media (max-width: ${breakpoints.screenMD}) {
+    display: none;
   }
 
   .rotate {

@@ -19,7 +19,7 @@ const Comment: FC<CommentProps> = () => {
   const theme = useTheme()
 
   return (
-    <CommentStyled>
+    <CommentStyled data-testid="comment">
       <Avatar>
         <AvatarImg
           src="https://www.xtrafondos.com/wallpapers/vertical/bart-simpson-minimalista-3459.jpg"
