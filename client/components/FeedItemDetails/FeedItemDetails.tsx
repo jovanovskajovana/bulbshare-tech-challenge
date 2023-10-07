@@ -86,9 +86,11 @@ const FeedItemDetails: FC<FeedItemDetailsProps> = ({
     const detailsContainerOffsetTop =
       detailsContainer.current?.getBoundingClientRect().top ?? 0
 
+    const PADDING_TOP = 48
+
     if (e.deltaY > 0 && !isDetailsView) {
       setIsDetailsView(true)
-    } else if (e.deltaY < -100 && detailsContainerOffsetTop === 48) {
+    } else if (e.deltaY < -100 && detailsContainerOffsetTop === PADDING_TOP) {
       setIsDetailsView(false)
     }
   }, [])

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useCallback, useRef } from 'react'
 import { useTheme } from 'styled-components'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
@@ -17,6 +17,7 @@ import { getArrayFromLength } from '../utils/helpers'
 
 const Home: FC = () => {
   const theme = useTheme()
+  const feedList = useRef<HTMLInputElement>(null)
 
   const {
     isLoading,
@@ -37,10 +38,28 @@ const Home: FC = () => {
     refetchOnWindowFocus: false,
   })
 
+  const handleFetchNextPage = useCallback(() => {
+    const windowsHeight = window.innerHeight
+    const feedListOffsetBottom =
+      feedList.current?.getBoundingClientRect().bottom ?? 0
+
+    const OFFSET = 120
+
+    if (windowsHeight > feedListOffsetBottom + OFFSET) {
+      fetchNextPage()
+    }
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleFetchNextPage)
+
+    return () => window.removeEventListener('scroll', handleFetchNextPage)
+  }, [])
+
   return (
     <HomeStyled>
       <Container column mobileColumn alignItems="center">
-        <FeedList>
+        <FeedList ref={feedList}>
           {isLoading ? (
             getArrayFromLength(3).map((_, index) => (
               <FeedItemSkeleton key={index} />
@@ -56,14 +75,14 @@ const Home: FC = () => {
                 page.map((item, index) => <FeedItem key={index} data={item} />),
               )}
 
-              {/* Loading feed items */}
-              {isFetchingNextPage ? (
+              {/* Fetching feed items */}
+              {isFetchingNextPage &&
                 getArrayFromLength(3).map((_, index) => (
                   <FeedItemSkeleton key={index} />
-                ))
-              ) : hasNextPage ? (
-                <button onClick={() => fetchNextPage()}>Load More</button>
-              ) : (
+                ))}
+
+              {/* No more feed items */}
+              {!hasNextPage && (
                 <BodySmall color={theme.textSecondary} marginTop="1.5rem">
                   Nothing more to load.
                 </BodySmall>
