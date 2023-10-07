@@ -12,6 +12,8 @@
     "eject": "react-app-rewired eject"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.35.7",
+    "axios": "^1.5.1",
     "cors": "^2.8.5",
     "express": "^4.13.3",
     "moment": "^2.29.4",

@@ -1,6 +1,8 @@
 import { FC } from 'react'
 import { useTheme } from 'styled-components'
 
+import { CommentData } from '../../interfaces/data'
+
 import { BodySmall, BodyExtraSmall } from '../../styles/Typography'
 import { Avatar, AvatarImg } from '../../styles/components/AvatarStyled'
 import {
@@ -10,30 +12,27 @@ import {
 
 import { getDateDifference } from '../../utils/helpers'
 
-export interface CommentProps {}
+export interface CommentProps {
+  data: CommentData
+}
 
 /**
  * A component displaying a single comment details.
  */
-const Comment: FC<CommentProps> = () => {
+const Comment: FC<CommentProps> = ({ data }) => {
   const theme = useTheme()
 
   return (
     <CommentStyled data-testid="comment">
       <Avatar>
-        <AvatarImg
-          src="https://www.xtrafondos.com/wallpapers/vertical/bart-simpson-minimalista-3459.jpg"
-          alt="name"
-        />
+        <AvatarImg src={data.user.avatar} alt={data.user.name} />
       </Avatar>
       <CommentDetails>
         <BodySmall>
-          <span>Ninja</span> Really cool shoes ! Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit. Nullam finibus odio et ante venenatis,
-          non maximus quam placerat.
+          <span>{data.user.name}</span> {data.comment}
         </BodySmall>
         <BodyExtraSmall color={theme.textSecondary}>
-          {getDateDifference('2022-10-27 11:10:58')}
+          {getDateDifference(data.submitted_on)}
         </BodyExtraSmall>
       </CommentDetails>
     </CommentStyled>

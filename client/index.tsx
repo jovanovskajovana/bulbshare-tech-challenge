@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom/client'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from 'styled-components'
 
 import Footer from './components/Footer'
@@ -12,10 +13,12 @@ import Fonts from './styles/Fonts'
 import { Main } from './styles/Layout'
 import Header from './components/Header'
 
+const queryClient = new QueryClient()
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
-  <>
+  <QueryClientProvider client={queryClient}>
     <GlobalStyles />
     <Fonts />
     <ThemeProvider theme={theme}>
@@ -25,5 +28,5 @@ root.render(
         <Footer />
       </Main>
     </ThemeProvider>
-  </>,
+  </QueryClientProvider>,
 )

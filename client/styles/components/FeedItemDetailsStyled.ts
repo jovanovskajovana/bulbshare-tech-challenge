@@ -39,7 +39,7 @@ export const Scrollable = styled.div<ScrollableProps>`
   height: 100%;
   transform: ${({ scrollDown }) =>
     scrollDown ? 'translateY(-100vh)' : 'translateY(0)'};
-  transition: 0.3s ease-out;
+  transition: 0.4s ease-out;
 
   @media (max-width: ${breakpoints.screenMD}) {
     display: flex;
@@ -146,6 +146,7 @@ export const CommentsHeader = styled.div`
 export const CommentsBody = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
 

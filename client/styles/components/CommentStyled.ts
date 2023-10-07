@@ -5,6 +5,7 @@ import { AVATAR_WIDTH } from '../../constants/ui'
 export const CommentStyled = styled.div`
   display: flex;
   gap: 0.75rem;
+  width: 100%;
 `
 
 export const CommentDetails = styled.div`
