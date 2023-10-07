@@ -2,6 +2,10 @@
 
 > [Preview](https://bulbshare-frontend-challenge.netlify.app)
 
+### Setup .env
+
+Create a `.env.local` file in the project root and copy the environment variables from [`.env.local.example`](.env.local.example).
+
 ### Build & running
 
 After cloning this repo, run `yarn` to install all dependencies. Then use:
