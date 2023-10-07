@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useCallback } from 'react'
+import { FC, useState, useEffect, useCallback, useRef } from 'react'
 import { useTheme } from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
 import moment from 'moment'
@@ -45,6 +45,7 @@ const FeedItemDetails: FC<FeedItemDetailsProps> = ({
   handleCloseButtonClick,
 }) => {
   const theme = useTheme()
+  const detailsContainer = useRef<HTMLInputElement>(null)
 
   const [isDetailsView, setIsDetailsView] = useState(false)
 
@@ -81,12 +82,29 @@ const FeedItemDetails: FC<FeedItemDetailsProps> = ({
     }
   }, [])
 
+  const detectWheel = useCallback((e: WheelEvent) => {
+    const detailsContainerOffsetTop =
+      detailsContainer.current?.getBoundingClientRect().top ?? 0
+
+    if (e.deltaY > 0 && !isDetailsView) {
+      setIsDetailsView(true)
+    } else if (e.deltaY < -100 && detailsContainerOffsetTop === 48) {
+      setIsDetailsView(false)
+    }
+  }, [])
+
   useEffect(() => {
-    document.addEventListener('keydown', detectKeydown, false)
+    document.addEventListener('keydown', detectKeydown)
 
     return () => {
-      document.removeEventListener('keydown', detectKeydown, false)
+      document.removeEventListener('keydown', detectKeydown)
     }
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener('wheel', detectWheel)
+
+    return () => window.removeEventListener('wheel', detectWheel)
   }, [])
 
   return (
@@ -99,8 +117,14 @@ const FeedItemDetails: FC<FeedItemDetailsProps> = ({
           <Media>
             <MediaImage bgImage={feedItemData.banner_image} />
           </Media>
-          <Details>
-            <Container column mobileColumn alignItems="center" maxWidth="50%">
+          <Details id="details">
+            <Container
+              column
+              mobileColumn
+              alignItems="center"
+              maxWidth="50%"
+              ref={detailsContainer}
+            >
               <Avatar>
                 <AvatarImg
                   src={feedItemData.brand.logo}
