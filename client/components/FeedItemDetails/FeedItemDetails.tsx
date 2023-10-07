@@ -1,6 +1,9 @@
 import { FC, useState, useEffect, useCallback } from 'react'
 import { useTheme } from 'styled-components'
+import { useQuery } from '@tanstack/react-query'
 import moment from 'moment'
+
+import FeedApi from '../../api/FeedApi'
 
 import { FeedItemData } from '../../interfaces/data'
 
@@ -26,9 +29,10 @@ import {
 import Comment from '../Comment'
 import CloseDialog from '../_icons/close-dialog'
 import SwitchDown from '../_icons/switch-down'
+import { LoaderStyled } from '../../styles/components/LoaderStyled'
 
 export interface FeedItemDetailsProps {
-  feedItemData?: FeedItemData
+  feedItemData: FeedItemData
   handleCloseButtonClick: () => void
 }
 
@@ -43,6 +47,12 @@ const FeedItemDetails: FC<FeedItemDetailsProps> = ({
   const theme = useTheme()
 
   const [isDetailsView, setIsDetailsView] = useState(false)
+
+  const { isLoading, isError, data } = useQuery({
+    queryKey: ['comments', feedItemData.briefref],
+    queryFn: () => FeedApi.fetchComments(feedItemData.briefref),
+    refetchOnWindowFocus: false,
+  })
 
   const handleClose = () => {
     setIsDetailsView(false)
@@ -84,86 +94,79 @@ const FeedItemDetails: FC<FeedItemDetailsProps> = ({
       <ButtonClose onClick={handleClose}>
         <CloseDialog />
       </ButtonClose>
-      {!feedItemData ? (
-        <Container alignItems="center" justifyContent="center">
-          <BodyLarge color={theme.textSecondary}>
-            Oops, content cannot be displayed!
-          </BodyLarge>
-        </Container>
-      ) : (
-        <>
-          <Content>
-            <Scrollable scrollDown={isDetailsView}>
-              <Media>
-                <MediaImage bgImage={feedItemData.banner_image} />
-              </Media>
-              <Details>
-                <Container
-                  column
-                  mobileColumn
-                  alignItems="center"
-                  maxWidth="50%"
-                >
-                  <Avatar>
-                    <AvatarImg
-                      src={feedItemData.brand.logo}
-                      alt={feedItemData.brand.name}
-                    />
-                  </Avatar>
-                  <BodyLarge weight={600} marginTop="2rem">
-                    {feedItemData.feed_title}
-                  </BodyLarge>
-                  <BodySmall
-                    color={theme.textSecondary}
-                    weight={500}
-                    marginTop="0.5rem"
-                  >
-                    {moment(feedItemData.starts_on).format('DD MMMM YYYY')}
-                  </BodySmall>
-                  <BodyMedium alignCenter marginTop="2rem">
-                    {feedItemData.banner_text}
-                  </BodyMedium>
-                  <DetailsImage
-                    src={feedItemData.ad_1_image}
-                    alt={feedItemData.feed_title}
-                  />
-                  <BodyMedium alignCenter marginTop="3rem">
-                    {feedItemData.description}
-                  </BodyMedium>
-                  <DetailsImage
-                    src={feedItemData.ad_2_image}
-                    alt={feedItemData.feed_title}
-                  />
-                </Container>
-              </Details>
-            </Scrollable>
-            <ArrowsGroup>
-              <ButtonRound isDisabled={!isDetailsView} onClick={handleUp}>
-                <SwitchDown className="rotate" />
-              </ButtonRound>
-              <ButtonRound isDisabled={isDetailsView} onClick={handleDown}>
-                <SwitchDown />
-              </ButtonRound>
-            </ArrowsGroup>
-          </Content>
-          <Comments>
-            <CommentsHeader>
+      <Content>
+        <Scrollable scrollDown={isDetailsView}>
+          <Media>
+            <MediaImage bgImage={feedItemData.banner_image} />
+          </Media>
+          <Details>
+            <Container column mobileColumn alignItems="center" maxWidth="50%">
               <Avatar>
                 <AvatarImg
                   src={feedItemData.brand.logo}
                   alt={feedItemData.brand.name}
                 />
               </Avatar>
-              <BodySmall weight={600}>{feedItemData.brand.name}</BodySmall>
-            </CommentsHeader>
-            <CommentsBody>
-              <Comment />
-              <Comment />
-              <Comment />
-            </CommentsBody>
-          </Comments>
-        </>
-      )}
+              <BodyLarge weight={600} marginTop="2rem">
+                {feedItemData.feed_title}
+              </BodyLarge>
+              <BodySmall
+                color={theme.textSecondary}
+                weight={500}
+                marginTop="0.5rem"
+              >
+                {moment(feedItemData.starts_on).format('DD MMMM YYYY')}
+              </BodySmall>
+              <BodyMedium alignCenter marginTop="2rem">
+                {feedItemData.banner_text}
+              </BodyMedium>
+              <DetailsImage
+                src={feedItemData.ad_1_image}
+                alt={feedItemData.feed_title}
+              />
+              <BodyMedium alignCenter marginTop="3rem">
+                {feedItemData.description}
+              </BodyMedium>
+              <DetailsImage
+                src={feedItemData.ad_2_image}
+                alt={feedItemData.feed_title}
+              />
+            </Container>
+          </Details>
+        </Scrollable>
+        <ArrowsGroup>
+          <ButtonRound isDisabled={!isDetailsView} onClick={handleUp}>
+            <SwitchDown className="rotate" />
+          </ButtonRound>
+          <ButtonRound isDisabled={isDetailsView} onClick={handleDown}>
+            <SwitchDown />
+          </ButtonRound>
+        </ArrowsGroup>
+      </Content>
+      <Comments>
+        <CommentsHeader>
+          <Avatar>
+            <AvatarImg
+              src={feedItemData.brand.logo}
+              alt={feedItemData.brand.name}
+            />
+          </Avatar>
+          <BodySmall weight={600}>{feedItemData.brand.name}</BodySmall>
+        </CommentsHeader>
+        <CommentsBody>
+          {isLoading ? (
+            <LoaderStyled />
+          ) : isError ? (
+            <BodySmall color={theme.textSecondary}>
+              Oops, something went wrong.
+            </BodySmall>
+          ) : data.length === 0 ? (
+            <BodySmall color={theme.textSecondary}>No comments yet.</BodySmall>
+          ) : (
+            data.map((item, index) => <Comment key={index} data={item} />)
+          )}
+        </CommentsBody>
+      </Comments>
     </FeedItemDetailsStyled>
   )
 }

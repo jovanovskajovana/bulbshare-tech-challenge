@@ -15,3 +15,17 @@ export interface FeedItemData {
   ad_2_image: string
   starts_on: string
 }
+
+export interface User {
+  userref: string
+  name: string
+  avatar: string
+}
+
+export interface CommentData {
+  bcommentref: string
+  briefref: string
+  user: User
+  comment: string
+  submitted_on: string
+}

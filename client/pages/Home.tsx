@@ -1,57 +1,77 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
+import { useTheme } from 'styled-components'
+import { useInfiniteQuery } from '@tanstack/react-query'
+
+import FeedApi from '../api/FeedApi'
 
 import FeedItem from '../components/FeedItem'
-import FeedItemDetails from '../components/FeedItemDetails'
-import Modal from '../components/Modal'
+import FeedItemSkeleton from '../components/FeedItemSkeleton'
+
+import { PAGE_LIMIT } from '../constants/data'
 
 import { Container } from '../styles/Layout'
+import { BodyLarge, BodySmall } from '../styles/Typography'
 import { HomeStyled, FeedList } from '../styles/pages/HomeStyled'
 
-import feed from '../feed.json' // remove this
-import FeedItemSkeleton from '../components/FeedItemSkeleton'
 import { getArrayFromLength } from '../utils/helpers'
 
 const Home: FC = () => {
-  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false)
-  const [currentBriefref, setCurrentBriefref] = useState<string | null>(null)
+  const theme = useTheme()
 
-  const onDetailsModalOpen = (briefref: string) => {
-    setCurrentBriefref(briefref)
-    setIsDetailsModalOpen(true)
-  }
+  const {
+    isLoading,
+    isError,
+    data,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['feed'],
+    queryFn: ({ pageParam = 1 }) => FeedApi.fetchFeed(pageParam),
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage =
+        lastPage.length === PAGE_LIMIT ? allPages.length + 1 : undefined
 
-  const onDetailsModalClose = () => {
-    setCurrentBriefref(null)
-    setIsDetailsModalOpen(false)
-  }
-
-  const isLoading = false // remove this
+      return nextPage
+    },
+    refetchOnWindowFocus: false,
+  })
 
   return (
     <HomeStyled>
       <Container column mobileColumn alignItems="center">
         <FeedList>
-          {isLoading
-            ? getArrayFromLength(5).map((_, index) => (
-                <FeedItemSkeleton key={index} />
-              ))
-            : feed.map((item, index) => (
-                <FeedItem
-                  key={index}
-                  brand={item.brand}
-                  banner_image={item.banner_image}
-                  feed_title={item.feed_title}
-                  handleLinkClick={() => onDetailsModalOpen(item.briefref)}
-                />
-              ))}
+          {isLoading ? (
+            getArrayFromLength(3).map((_, index) => (
+              <FeedItemSkeleton key={index} />
+            ))
+          ) : isError ? (
+            <BodyLarge color={theme.textSecondary}>
+              Oops, something went wrong.
+            </BodyLarge>
+          ) : (
+            <>
+              {/* Initial feed items */}
+              {data.pages.map((page) =>
+                page.map((item, index) => <FeedItem key={index} data={item} />),
+              )}
+
+              {/* Loading feed items */}
+              {isFetchingNextPage ? (
+                getArrayFromLength(3).map((_, index) => (
+                  <FeedItemSkeleton key={index} />
+                ))
+              ) : hasNextPage ? (
+                <button onClick={() => fetchNextPage()}>Load More</button>
+              ) : (
+                <BodySmall color={theme.textSecondary} marginTop="1.5rem">
+                  Nothing more to load.
+                </BodySmall>
+              )}
+            </>
+          )}
         </FeedList>
       </Container>
-      <Modal isOpen={isDetailsModalOpen}>
-        <FeedItemDetails
-          feedItemData={feed.find((item) => item.briefref === currentBriefref)}
-          handleCloseButtonClick={onDetailsModalClose}
-        />
-      </Modal>
     </HomeStyled>
   )
 }
