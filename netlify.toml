@@ -1,0 +1,10 @@
+[build]
+  functions = "netlify/functions"
+[[redirects]]
+  from = "/.netlify/functions/feed"
+  to = "/feed"
+  status = 200
+[[redirects]]
+  from = "/.netlify/functions/comments/*"
+  to = "/comments/:splat"
+  status = 200
