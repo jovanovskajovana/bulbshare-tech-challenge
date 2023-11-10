@@ -44,6 +44,7 @@ export const Scrollable = styled.div<ScrollableProps>`
   @media (max-width: ${breakpoints.screenMD}) {
     display: flex;
     flex-direction: column;
+    transform: translateY(0);
     min-height: 100%;
   }
 `
